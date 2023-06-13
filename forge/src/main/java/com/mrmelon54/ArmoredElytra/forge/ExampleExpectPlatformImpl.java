@@ -1,6 +1,5 @@
 package com.mrmelon54.ArmoredElytra.forge;
 
-import com.mrmelon54.ArmoredElytra.ExampleExpectPlatform;
 import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.nio.file.Path;

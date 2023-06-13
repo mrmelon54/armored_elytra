@@ -1,6 +1,5 @@
 package com.mrmelon54.ArmoredElytra.fabric;
 
-import com.mrmelon54.ArmoredElytra.ExampleExpectPlatform;
 import net.fabricmc.loader.api.FabricLoader;
 
 import java.nio.file.Path;
