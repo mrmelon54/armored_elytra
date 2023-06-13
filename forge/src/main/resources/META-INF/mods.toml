@@ -1,0 +1,33 @@
+modLoader = "javafml"
+loaderVersion = "[46,)"
+issueTrackerURL = "https://github.com/MrMelon54/armored_elytra/issues"
+license = "GPL-3.0-only"
+
+[[mods]]
+modId = "armored_elytra"
+version = "${version}"
+displayName = "Armored Elytra"
+authors = "MrMelon54"
+description = "Show the armor and elytra when using the armored elytra datapack"
+logoFile = "/icon.png"
+
+[[dependencies.armored_elytra]]
+modId = "forge"
+mandatory = true
+versionRange = "[46,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.armored_elytra]]
+modId = "minecraft"
+mandatory = true
+versionRange = "[1.20,)"
+ordering = "NONE"
+side = "BOTH"
+
+[[dependencies.armored_elytra]]
+modId = "architectury"
+mandatory = true
+versionRange = "[9.0.0,)"
+ordering = "AFTER"
+side = "BOTH"

@@ -1,0 +1,32 @@
+{
+  "schemaVersion": 1,
+  "id": "armored_elytra",
+  "version": "${version}",
+  "name": "Armored Elytra",
+  "description": "Show the armor and elytra when using the armored elytra datapack",
+  "authors": [
+    "MrMelon54"
+  ],
+  "contact": {
+    "homepage": "https://mrmelon54.com/minecraft/armored-elytra",
+    "sources": "https://github.com/MrMelon54/armored_elytra",
+    "issues": "https://github.com/MrMelon54/armored_elytra/issues"
+  },
+  "license": "GPL-3.0-only",
+  "icon": "icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.mrmelon54.ArmoredElytra.fabric.ArmoredElytraFabric"
+    ]
+  },
+  "mixins": [
+    "armored_elytra.mixins.json",
+    "armored_elytra-common.mixins.json"
+  ],
+  "depends": {
+    "fabric": "*",
+    "minecraft": ">=1.20",
+    "architectury": ">=9.0.0"
+  }
+}

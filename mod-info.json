@@ -1,0 +1,10 @@
+{
+  "modid": "armored_elytra",
+  "modname": "Armored Elytra",
+  "modclass": "ArmoredElytra",
+  "modgroup": "com.mrmelon54.ArmoredElytra",
+  "moddesc": "Show the armor and elytra when using the armored elytra datapack",
+  "modwebsite": "https://mrmelon54.com/minecraft/armored-elytra",
+  "modsource": "https://github.com/MrMelon54/armored_elytra",
+  "modissue": "https://github.com/MrMelon54/armored_elytra/issues"
+}

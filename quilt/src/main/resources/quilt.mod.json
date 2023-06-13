@@ -1,0 +1,53 @@
+{
+  "schema_version": 1,
+  "mixin": [
+    "armored_elytra.mixins.json",
+    "armored_elytra-common.mixins.json"
+  ],
+  "quilt_loader": {
+    "group": "${group}",
+    "id": "armored_elytra",
+    "version": "${version}",
+    "metadata": {
+      "name": "Armored Elytra",
+      "description": "Show the armor and elytra when using the armored elytra datapack",
+      "contributors": {
+        "MrMelon54": "Owner"
+      },
+      "contact": {
+        "homepage": "https://mrmelon54.com/minecraft/armored-elytra",
+        "sources": "https://github.com/MrMelon54/armored_elytra",
+        "issues": "https://github.com/MrMelon54/armored_elytra/issues"
+      },
+      "license": "GPL-3.0-only",
+      "icon": "icon.png"
+    },
+    "intermediate_mappings": "net.fabricmc:intermediary",
+    "entrypoints": {
+      "init": [
+        "com.mrmelon54.ArmoredElytra.quilt.ArmoredElytraQuilt"
+      ]
+    },
+    "depends": [
+      {
+        "id": "quilt_loader",
+        "version": "*"
+      },
+      {
+        "id": "quilt_base",
+        "version": "*"
+      },
+      {
+        "id": "minecraft",
+        "version": ">=1.20"
+      },
+      {
+        "id": "architectury",
+        "version": ">=9.0.0"
+      }
+    ]
+  },
+  "minecraft": {
+    "environment": "*"
+  }
+}
