@@ -1,7 +1,5 @@
 package com.mrmelon54.ArmoredElytra;
 
-import com.mrmelon54.ArmoredElytra.items.Pim16aap2SpigotArmoredElytraItem;
-import com.mrmelon54.ArmoredElytra.items.TheIllusiveC4ColytraItem;
 import com.mrmelon54.ArmoredElytra.items.VanillaTweaksArmoredElytraItem;
 import com.mrmelon54.ArmoredElytra.items.VoodooTweaksPlatedElytraItem;
 import net.minecraft.nbt.CompoundTag;
@@ -21,10 +19,10 @@ public interface ChestplateWithElytraItem {
         if (vtae != null) return vtae;
         VoodooTweaksPlatedElytraItem vtpe = VoodooTweaksPlatedElytraItem.fromItemStack(stack);
         if (vtpe != null) return vtpe;
-        TheIllusiveC4ColytraItem ticc = TheIllusiveC4ColytraItem.fromItemStack(stack);
+        /*TheIllusiveC4ColytraItem ticc = TheIllusiveC4ColytraItem.fromItemStack(stack);
         if (ticc != null) return ticc;
         Pim16aap2SpigotArmoredElytraItem psae = Pim16aap2SpigotArmoredElytraItem.fromItemStack(stack);
-        if (psae != null) return psae;
+        if (psae != null) return psae;*/
         return null;
     }
 

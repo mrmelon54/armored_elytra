@@ -3,10 +3,13 @@ package com.mrmelon54.ArmoredElytra;
 import com.mrmelon54.ArmoredElytra.models.ArmoredElytraModelProvider;
 import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
+import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.architectury.platform.Platform;
 import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
 import dev.architectury.registry.item.ItemPropertiesRegistry;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
@@ -16,6 +19,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -52,6 +56,20 @@ public class ArmoredElytra {
 
         // Clear armored elytra mappings when quitting a level
         ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(player -> armoredElytraMappings.clear());
+
+        ClientTooltipEvent.ITEM.register((stack, lines, flag) -> {
+            ChestplateWithElytraItem item = ChestplateWithElytraItem.fromItemStack(stack);
+            if (item == null) return;
+            if (!item.isArmoredElytra()) return;
+            ItemStack chestplateItemStack = item.getChestplateItemStack();
+            if (chestplateItemStack == null) return;
+            Minecraft mc = Minecraft.getInstance();
+            List<Component> tooltipLines = chestplateItemStack.getTooltipLines(mc.player, flag);
+            int i = lines.indexOf(CommonComponents.EMPTY);
+            int j = tooltipLines.indexOf(CommonComponents.EMPTY);
+            if (i == -1 || j == -1) return;
+            lines.addAll(i, tooltipLines.subList(1, j));
+        });
     }
 
     private static void tick(Minecraft minecraft) {
