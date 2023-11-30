@@ -1,6 +1,7 @@
 package com.mrmelon54.ArmoredElytra;
 
 import com.mrmelon54.ArmoredElytra.items.Pim16aap2SpigotArmoredElytraItem;
+import com.mrmelon54.ArmoredElytra.items.ValorlessHavenElytraItem;
 import com.mrmelon54.ArmoredElytra.items.VanillaTweaksArmoredElytraItem;
 import com.mrmelon54.ArmoredElytra.items.VoodooTweaksPlatedElytraItem;
 import net.minecraft.nbt.CompoundTag;
@@ -24,6 +25,8 @@ public interface ChestplateWithElytraItem {
         if (ticc != null) return ticc;*/
         Pim16aap2SpigotArmoredElytraItem psae = Pim16aap2SpigotArmoredElytraItem.fromItemStack(stack);
         if (psae != null) return psae;
+        ValorlessHavenElytraItem vhe = ValorlessHavenElytraItem.fromItemStack(stack);
+        if (vhe != null) return vhe;
         return null;
     }
 
