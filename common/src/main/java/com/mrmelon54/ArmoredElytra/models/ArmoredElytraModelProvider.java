@@ -13,7 +13,7 @@ public class ArmoredElytraModelProvider implements ClampedItemPropertyFunction {
     public float unclampedCall(ItemStack itemStack, @Nullable ClientLevel clientLevel, @Nullable LivingEntity livingEntity, int i) {
         if (itemStack == null || itemStack.isEmpty()) return 0;
         ChestplateWithElytraItem item = ChestplateWithElytraItem.fromItemStack(itemStack);
-        if (item == null || !item.getStatus()) return 0;
+        if (item == null || item.isInvalid()) return 0;
         float armElyId = InternalArrays.chestplateToArmoredElytraId(item.getChestplateType());
         if (armElyId == -1) {
             System.out.println("Chestplate type doesn't have a corresponding armored elytra type: returning missing model");

@@ -3,7 +3,6 @@ package com.mrmelon54.ArmoredElytra.items;
 
 import com.mrmelon54.ArmoredElytra.ChestplateWithElytraItem;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -18,12 +17,8 @@ public class VanillaTweaksArmoredElytraItem implements ChestplateWithElytraItem 
         this.isValid = isArmoredElytra();
     }
 
-    public ItemStack getItemStack() {
-        return stack;
-    }
-
-    public boolean getStatus() {
-        return isValid;
+    public boolean isInvalid() {
+        return !isValid;
     }
 
     @Override
@@ -36,50 +31,31 @@ public class VanillaTweaksArmoredElytraItem implements ChestplateWithElytraItem 
         return item.isValid ? item : null;
     }
 
-    public boolean equals(ChestplateWithElytraItem b) {
-        if (b == null) return false;
-        if (b instanceof VanillaTweaksArmoredElytraItem) return stack == ((VanillaTweaksArmoredElytraItem) b).stack;
-        return false;
-    }
-
-    @Override
-    public boolean hasEnchantmentGlint() {
-        ListTag elytraEnch = stack.getEnchantmentTags();
-        ListTag chestEnch = getChestplateItemStack().getEnchantmentTags();
-        return elytraEnch.size() + chestEnch.size() > 0;
-    }
-
     public boolean isArmoredElytra() {
         if (stack.isEmpty() || stack.getItem() != Items.ELYTRA) return false;
 
-        CompoundTag chestplate = getChestplate();
-        CompoundTag elytra = getElytra();
-        if (chestplate != null && elytra != null) {
-            ItemStack chestplateStack = ItemStack.of(chestplate);
-            ChestplateType = chestplateStack.getItem();
-            return ChestplateType != Items.AIR;
-        }
-        return false;
+        ItemStack chestplate = getChestplate();
+        ItemStack elytra = getElytra();
+        if (chestplate == null || elytra == null) return false;
+
+        ChestplateType = chestplate.getItem();
+        return ChestplateType != Items.AIR;
     }
 
-    public CompoundTag getElytra() {
+    public ItemStack getElytra() {
         CompoundTag armElyData = getArmoredElytraData();
-        if (armElyData != null) return armElyData.getCompound("elytra");
+        if (armElyData != null) return ItemStack.of(armElyData.getCompound("elytra"));
         return null;
     }
 
-    public CompoundTag getChestplate() {
+    public ItemStack getChestplate() {
         CompoundTag armElyData = getArmoredElytraData();
-        if (armElyData != null) return armElyData.getCompound("chestplate");
+        if (armElyData != null) return ItemStack.of(armElyData.getCompound("chestplate"));
         return null;
     }
 
     public CompoundTag getArmoredElytraData() {
         if (!stack.isEmpty() && stack.getItem() == Items.ELYTRA) return stack.getOrCreateTagElement("armElyData");
         return null;
-    }
-
-    public ItemStack getChestplateItemStack() {
-        return ItemStack.of(getChestplate());
     }
 }

@@ -3,7 +3,7 @@ package com.mrmelon54.ArmoredElytra.items;
 
 import com.mrmelon54.ArmoredElytra.ChestplateWithElytraItem;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -18,13 +18,9 @@ public class VoodooTweaksPlatedElytraItem implements ChestplateWithElytraItem {
         this.isValid = isArmoredElytra();
     }
 
-    public ItemStack getItemStack() {
-        return stack;
-    }
-
     @Override
-    public boolean getStatus() {
-        return isValid;
+    public boolean isInvalid() {
+        return !isValid;
     }
 
     @Override
@@ -37,81 +33,53 @@ public class VoodooTweaksPlatedElytraItem implements ChestplateWithElytraItem {
         return item.isValid ? item : null;
     }
 
-    public boolean equals(ChestplateWithElytraItem b) {
-        if (b == null) return false;
-        if (b instanceof VoodooTweaksPlatedElytraItem) return stack == ((VoodooTweaksPlatedElytraItem) b).stack;
-        return false;
-    }
-
-    @Override
-    public boolean hasEnchantmentGlint() {
-        ListTag elytraEnch = stack.getEnchantmentTags();
-        ListTag chestEnch = getChestplateItemStack().getEnchantmentTags();
-        return elytraEnch.size() + chestEnch.size() > 0;
-    }
-
     public boolean isArmoredElytra() {
-        if (!stack.isEmpty()) {
-            if (stack.getItem() == Items.ELYTRA) {
-                CompoundTag chestplate = getChestplate();
-                CompoundTag elytra = getElytra();
-                if (chestplate != null && elytra != null) {
-                    ItemStack chestplateStack = ItemStack.of(chestplate);
-                    ChestplateType = chestplateStack.getItem();
-                    return ChestplateType != Items.AIR;
-                }
-            }
+        ItemStack elytra = getElytra();
+        ItemStack chestplate = getChestplate();
+        if (chestplate == null || elytra == null) return false;
+
+        ChestplateType = chestplate.getItem();
+        return ChestplateType != Items.AIR;
+    }
+
+    public ItemStack getElytra() {
+        return stack.is(Items.ELYTRA) ? stack : null;
+    }
+
+    public ItemStack getChestplate() {
+        CompoundTag armElyData = stack.getTag();
+        if (armElyData == null) return null;
+
+        String plate = armElyData.getString("Plate");
+        ItemStack chestplateStack;
+        switch (plate) {
+            case "netherite":
+                chestplateStack = (new ItemStack(Items.NETHERITE_CHESTPLATE));
+                break;
+            case "diamond":
+                chestplateStack = (new ItemStack(Items.DIAMOND_CHESTPLATE));
+                break;
+            case "golden":
+                chestplateStack = (new ItemStack(Items.GOLDEN_CHESTPLATE));
+                break;
+            case "iron":
+                chestplateStack = (new ItemStack(Items.IRON_CHESTPLATE));
+                break;
+            case "chainmail":
+                chestplateStack = (new ItemStack(Items.CHAINMAIL_CHESTPLATE));
+                break;
+            case "leather":
+                chestplateStack = (new ItemStack(Items.LEATHER_CHESTPLATE));
+                break;
+            default:
+                return null;
         }
-        return false;
-    }
-
-    public CompoundTag getElytra() {
-        return getArmoredElytraData();
-    }
-
-    public CompoundTag getChestplate() {
-        CompoundTag armElyData = getArmoredElytraData();
-        if (armElyData != null) {
-            String plate = armElyData.getCompound("tag").getString("Plate");
-            CompoundTag chestplateStack;
-            switch (plate) {
-                case "netherite":
-                    chestplateStack = (new ItemStack(Items.NETHERITE_CHESTPLATE)).getOrCreateTag();
-                    break;
-                case "diamond":
-                    chestplateStack = (new ItemStack(Items.DIAMOND_CHESTPLATE)).getOrCreateTag();
-                    break;
-                case "golden":
-                    chestplateStack = (new ItemStack(Items.GOLDEN_CHESTPLATE)).getOrCreateTag();
-                    break;
-                case "iron":
-                    chestplateStack = (new ItemStack(Items.IRON_CHESTPLATE)).getOrCreateTag();
-                    break;
-                case "chainmail":
-                    chestplateStack = (new ItemStack(Items.CHAINMAIL_CHESTPLATE)).getOrCreateTag();
-                    break;
-                case "leather":
-                    chestplateStack = (new ItemStack(Items.LEATHER_CHESTPLATE)).getOrCreateTag();
-                    break;
-                default:
-                    return null;
-            }
-            if (armElyData.getCompound("tag").contains("color")) {
-                CompoundTag displaytag = chestplateStack.getCompound("tag").getCompound("display");
-                displaytag.putInt("color", armElyData.getCompound("tag").getInt("color"));
-                chestplateStack.getCompound("tag").put("display", displaytag);
-            }
-            return chestplateStack;
+        if (armElyData.contains("OriginalChestplate", Tag.TAG_COMPOUND)) {
+            CompoundTag originalChestplate = armElyData.getCompound("OriginalChestplate");
+            CompoundTag chestplateTag = chestplateStack.getOrCreateTag();
+            for (String key : originalChestplate.getAllKeys())
+                chestplateTag.put(key, originalChestplate.get(key));
         }
-        return null;
-    }
-
-    public CompoundTag getArmoredElytraData() {
-        if (!stack.isEmpty() && stack.getItem() == Items.ELYTRA) return stack.getOrCreateTag();
-        return null;
-    }
-
-    public ItemStack getChestplateItemStack() {
-        return ItemStack.of(getChestplate());
+        return chestplateStack;
     }
 }

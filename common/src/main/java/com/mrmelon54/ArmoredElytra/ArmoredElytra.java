@@ -46,7 +46,7 @@ public class ArmoredElytra {
         ColorHandlerRegistry.registerItemColors((itemStack, i) -> {
             if (itemStack == null) return -1;
             ChestplateWithElytraItem item = ChestplateWithElytraItem.fromItemStack(itemStack);
-            if (item == null || !item.getStatus()) return -1;
+            if (item == null || item.isInvalid()) return -1;
             return i > 0 ? -1 : item.getLeatherChestplateColor();
         }, Items.ELYTRA);
 
@@ -61,7 +61,7 @@ public class ArmoredElytra {
             ChestplateWithElytraItem item = ChestplateWithElytraItem.fromItemStack(stack);
             if (item == null) return;
             if (!item.isArmoredElytra()) return;
-            ItemStack chestplateItemStack = item.getChestplateItemStack();
+            ItemStack chestplateItemStack = item.getChestplate();
             if (chestplateItemStack == null) return;
             Minecraft mc = Minecraft.getInstance();
             List<Component> tooltipLines = chestplateItemStack.getTooltipLines(mc.player, flag);

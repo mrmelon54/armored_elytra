@@ -3,8 +3,6 @@ package com.mrmelon54.ArmoredElytra.items;
 
 import com.mrmelon54.ArmoredElytra.ChestplateWithElytraItem;
 import com.mrmelon54.ArmoredElytra.InternalArrays;
-import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -19,12 +17,8 @@ public class TheIllusiveC4ColytraItem implements ChestplateWithElytraItem {
         this.isValid = isArmoredElytra();
     }
 
-    public ItemStack getItemStack() {
-        return stack;
-    }
-
-    public boolean getStatus() {
-        return isValid;
+    public boolean isInvalid() {
+        return !isValid;
     }
 
     @Override
@@ -37,46 +31,19 @@ public class TheIllusiveC4ColytraItem implements ChestplateWithElytraItem {
         return item.isValid ? item : null;
     }
 
-    public boolean equals(ChestplateWithElytraItem b) {
-        if (b == null) return false;
-        if (b instanceof VanillaTweaksArmoredElytraItem) return stack == ((VanillaTweaksArmoredElytraItem) b).stack;
-        return false;
-    }
-
-    @Override
-    public boolean hasEnchantmentGlint() {
-        ListTag elytraEnch = stack.getEnchantmentTags();
-        ListTag chestEnch = getChestplateItemStack().getEnchantmentTags();
-        return elytraEnch.size() + chestEnch.size() > 0;
-    }
-
     public boolean isArmoredElytra() {
-        if (!stack.isEmpty()) {
-            if (InternalArrays.isItemChestplate(stack.getItem())) {
-                CompoundTag elytra = getElytra();
-                if (elytra != null) {
-                    ChestplateType = stack.getItem();
-                    return ChestplateType != Items.AIR;
-                }
-            }
-        }
-        return false;
+        if (stack.isEmpty() || !InternalArrays.isItemChestplate(stack.getItem())) return false;
+        ItemStack elytra = getElytra();
+        if (elytra == null) return false;
+        ChestplateType = stack.getItem();
+        return ChestplateType != Items.AIR;
     }
 
-    public CompoundTag getElytra() {
-        return stack.getOrCreateTagElement("colytra:ElytraUpgrade");
+    public ItemStack getElytra() {
+        return ItemStack.of(stack.getOrCreateTagElement("colytra:ElytraUpgrade"));
     }
 
-    public CompoundTag getArmoredElytraData() {
-        if (!stack.isEmpty()) return stack.getOrCreateTag();
-        return null;
-    }
-
-    public CompoundTag getChestplate() {
-        return stack.getOrCreateTag();
-    }
-
-    public ItemStack getChestplateItemStack() {
+    public ItemStack getChestplate() {
         return stack;
     }
 }
