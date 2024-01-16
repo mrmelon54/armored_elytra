@@ -86,7 +86,7 @@ public class ArmoredElytra {
     private static void updateWearingArmoredElytra(LivingEntity livingEntity) {
         ItemStack chestSlot = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
         ChestplateWithElytraItem item = ChestplateWithElytraItem.fromItemStack(chestSlot);
-        if (item == null) return;
-        armoredElytraMappings.put(livingEntity.getUUID(), item);
+        if (item != null) armoredElytraMappings.put(livingEntity.getUUID(), item);
+        else armoredElytraMappings.remove(livingEntity.getUUID());
     }
 }
