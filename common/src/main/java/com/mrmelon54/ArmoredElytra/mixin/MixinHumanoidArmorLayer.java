@@ -34,12 +34,14 @@ public abstract class MixinHumanoidArmorLayer<T extends LivingEntity, M extends 
         // check if the user is wearing an armored elytra
         ChestplateWithElytraItem item = ArmoredElytra.armoredElytraMappings.get(livingEntity.getUUID());
         if (item == null || item.isInvalid()) return;
+        ItemStack chestplate = item.getChestplate();
+        if (chestplate == null) return;
 
         // save the original item stack
         ItemStack itemStack = livingEntity.getItemBySlot(EquipmentSlot.CHEST);
 
         // swap out the item and render it, then swap back after
-        livingEntity.setItemSlot(EquipmentSlot.CHEST, item.getChestplate());
+        livingEntity.setItemSlot(EquipmentSlot.CHEST, chestplate);
         this.renderArmorPiece(poseStack, multiBufferSource, livingEntity, EquipmentSlot.CHEST, i, this.getArmorModel(EquipmentSlot.CHEST));
         livingEntity.setItemSlot(EquipmentSlot.CHEST, itemStack);
     }
