@@ -3,43 +3,13 @@ package com.mrmelon54.ArmoredElytra.items;
 
 import com.mrmelon54.ArmoredElytra.ChestplateWithElytraItem;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-public class VanillaTweaksArmoredElytraItem implements ChestplateWithElytraItem {
-    public final ItemStack stack;
-    public boolean isValid;
-    public Item ChestplateType;
-
-    public VanillaTweaksArmoredElytraItem(ItemStack stack) {
-        this.stack = stack;
-        this.isValid = isArmoredElytra();
-    }
-
-    public boolean isInvalid() {
-        return !isValid;
-    }
-
-    @Override
-    public Item getChestplateType() {
-        return ChestplateType;
-    }
-
+public record VanillaTweaksArmoredElytraItem(ItemStack stack) implements ChestplateWithElytraItem {
     public static VanillaTweaksArmoredElytraItem fromItemStack(ItemStack stack) {
         VanillaTweaksArmoredElytraItem item = new VanillaTweaksArmoredElytraItem(stack);
-        return item.isValid ? item : null;
-    }
-
-    public boolean isArmoredElytra() {
-        if (stack.isEmpty() || stack.getItem() != Items.ELYTRA) return false;
-
-        ItemStack chestplate = getChestplate();
-        ItemStack elytra = getElytra();
-        if (chestplate == null || elytra == null) return false;
-
-        ChestplateType = chestplate.getItem();
-        return ChestplateType != Items.AIR;
+        return item.isArmoredElytra() ? item : null;
     }
 
     public ItemStack getElytra() {

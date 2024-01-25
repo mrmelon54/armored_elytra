@@ -10,10 +10,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public interface ChestplateWithElytraItem {
-    boolean isInvalid();
-
-    Item getChestplateType();
-
     static ChestplateWithElytraItem fromItemStack(ItemStack stack) {
         VanillaTweaksArmoredElytraItem vtae = VanillaTweaksArmoredElytraItem.fromItemStack(stack);
         if (vtae != null) return vtae;
@@ -26,7 +22,11 @@ public interface ChestplateWithElytraItem {
         return null;
     }
 
-    boolean isArmoredElytra();
+    default boolean isArmoredElytra() {
+        ItemStack elytra = getElytra();
+        ItemStack chestplate = getChestplate();
+        return elytra != null && !elytra.isEmpty() && elytra.is(Items.ELYTRA) && chestplate != null && !chestplate.isEmpty() && InternalArrays.isItemChestplate(chestplate.getItem());
+    }
 
     default int getLeatherChestplateColor() {
         ItemStack leatherChestplate = getChestplate();

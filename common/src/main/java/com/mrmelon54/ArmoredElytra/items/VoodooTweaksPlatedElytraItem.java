@@ -8,38 +8,10 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
-public class VoodooTweaksPlatedElytraItem implements ChestplateWithElytraItem {
-    public final ItemStack stack;
-    public boolean isValid;
-    public Item ChestplateType;
-
-    public VoodooTweaksPlatedElytraItem(ItemStack stack) {
-        this.stack = stack;
-        this.isValid = isArmoredElytra();
-    }
-
-    @Override
-    public boolean isInvalid() {
-        return !isValid;
-    }
-
-    @Override
-    public Item getChestplateType() {
-        return ChestplateType;
-    }
-
+public record VoodooTweaksPlatedElytraItem(ItemStack stack) implements ChestplateWithElytraItem {
     public static VoodooTweaksPlatedElytraItem fromItemStack(ItemStack stack) {
         VoodooTweaksPlatedElytraItem item = new VoodooTweaksPlatedElytraItem(stack);
-        return item.isValid ? item : null;
-    }
-
-    public boolean isArmoredElytra() {
-        ItemStack elytra = getElytra();
-        ItemStack chestplate = getChestplate();
-        if (chestplate == null || elytra == null) return false;
-
-        ChestplateType = chestplate.getItem();
-        return ChestplateType != Items.AIR;
+        return item.isArmoredElytra() ? item : null;
     }
 
     public ItemStack getElytra() {
@@ -51,29 +23,31 @@ public class VoodooTweaksPlatedElytraItem implements ChestplateWithElytraItem {
         if (armElyData == null) return null;
 
         String plate = armElyData.getString("Plate");
-        ItemStack chestplateStack;
+        Item chestplateType;
         switch (plate) {
             case "netherite":
-                chestplateStack = (new ItemStack(Items.NETHERITE_CHESTPLATE));
+                chestplateType = Items.NETHERITE_CHESTPLATE;
                 break;
             case "diamond":
-                chestplateStack = (new ItemStack(Items.DIAMOND_CHESTPLATE));
+                chestplateType = Items.DIAMOND_CHESTPLATE;
                 break;
             case "golden":
-                chestplateStack = (new ItemStack(Items.GOLDEN_CHESTPLATE));
+                chestplateType = Items.GOLDEN_CHESTPLATE;
                 break;
             case "iron":
-                chestplateStack = (new ItemStack(Items.IRON_CHESTPLATE));
+                chestplateType = Items.IRON_CHESTPLATE;
                 break;
             case "chainmail":
-                chestplateStack = (new ItemStack(Items.CHAINMAIL_CHESTPLATE));
+                chestplateType = Items.CHAINMAIL_CHESTPLATE;
                 break;
             case "leather":
-                chestplateStack = (new ItemStack(Items.LEATHER_CHESTPLATE));
+                chestplateType = Items.LEATHER_CHESTPLATE;
                 break;
             default:
                 return null;
         }
+        ItemStack chestplateStack = new ItemStack(chestplateType);
+
         if (armElyData.contains("OriginalChestplate", Tag.TAG_COMPOUND)) {
             CompoundTag originalChestplate = armElyData.getCompound("OriginalChestplate");
             CompoundTag chestplateTag = chestplateStack.getOrCreateTag();

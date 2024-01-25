@@ -46,7 +46,7 @@ public class ArmoredElytra {
         ColorHandlerRegistry.registerItemColors((itemStack, i) -> {
             if (itemStack == null) return -1;
             ChestplateWithElytraItem item = ChestplateWithElytraItem.fromItemStack(itemStack);
-            if (item == null || item.isInvalid()) return -1;
+            if (item == null) return -1;
             return i > 0 ? -1 : item.getLeatherChestplateColor();
         }, Items.ELYTRA);
 
