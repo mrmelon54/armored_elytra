@@ -25,26 +25,15 @@ public record VoodooTweaksPlatedElytraItem(ItemStack stack) implements Chestplat
         String plate = armElyData.getString("Plate");
         Item chestplateType;
         switch (plate) {
-            case "netherite":
-                chestplateType = Items.NETHERITE_CHESTPLATE;
-                break;
-            case "diamond":
-                chestplateType = Items.DIAMOND_CHESTPLATE;
-                break;
-            case "golden":
-                chestplateType = Items.GOLDEN_CHESTPLATE;
-                break;
-            case "iron":
-                chestplateType = Items.IRON_CHESTPLATE;
-                break;
-            case "chainmail":
-                chestplateType = Items.CHAINMAIL_CHESTPLATE;
-                break;
-            case "leather":
-                chestplateType = Items.LEATHER_CHESTPLATE;
-                break;
-            default:
+            case "netherite" -> chestplateType = Items.NETHERITE_CHESTPLATE;
+            case "diamond" -> chestplateType = Items.DIAMOND_CHESTPLATE;
+            case "golden" -> chestplateType = Items.GOLDEN_CHESTPLATE;
+            case "iron" -> chestplateType = Items.IRON_CHESTPLATE;
+            case "chainmail" -> chestplateType = Items.CHAINMAIL_CHESTPLATE;
+            case "leather" -> chestplateType = Items.LEATHER_CHESTPLATE;
+            default -> {
                 return null;
+            }
         }
         ItemStack chestplateStack = new ItemStack(chestplateType);
 

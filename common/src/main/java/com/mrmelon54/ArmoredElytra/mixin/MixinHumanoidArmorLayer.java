@@ -42,8 +42,10 @@ public abstract class MixinHumanoidArmorLayer<T extends LivingEntity, M extends 
 
     @Redirect(method = "renderArmorPiece", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;"))
     private ItemStack renderFakeArmorPiece(LivingEntity instance, EquipmentSlot equipmentSlot) {
+        // only modify if the equipment slot is OFFHAND (the chestplate repeat)
         if (equipmentSlot != EquipmentSlot.OFFHAND) return instance.getItemBySlot(equipmentSlot);
 
+        // grab armored elytra from cache, null values are sent as the EMPTY stack to prevent crashes
         ChestplateWithElytraItem item = ArmoredElytra.armoredElytraMappings.get(instance.getUUID());
         if (item == null) return ItemStack.EMPTY;
         ItemStack chestplate = item.getChestplate();
@@ -52,6 +54,7 @@ public abstract class MixinHumanoidArmorLayer<T extends LivingEntity, M extends 
 
     @Inject(method = "renderArmorPiece", at = @At(value = "INVOKE", target = "Lnet/minecraft/world/entity/LivingEntity;getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack;", shift = At.Shift.AFTER))
     private void injectedResetEqupimentSlot(CallbackInfo ci, @Local(argsOnly = true) LocalRef<EquipmentSlot> localRef) {
+        // reset equipment slot value for the rest of the renderArmorPiece method
         EquipmentSlot equipmentSlot = localRef.get();
         localRef.set(equipmentSlot == EquipmentSlot.OFFHAND ? EquipmentSlot.CHEST : equipmentSlot);
     }
