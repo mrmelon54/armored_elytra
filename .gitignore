@@ -27,3 +27,5 @@ bin/
 # fabric
 
 run/
+test-levels/armored elytra v*.zip
+test-levels/Plated_Elytra_*.zip

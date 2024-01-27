@@ -5,17 +5,12 @@ import com.mrmelon54.ArmoredElytra.items.ValorlessHavenElytraItem;
 import com.mrmelon54.ArmoredElytra.items.VanillaTweaksArmoredElytraItem;
 import com.mrmelon54.ArmoredElytra.items.VoodooTweaksPlatedElytraItem;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public interface ChestplateWithElytraItem {
-    ItemStack getItemStack();
-
-    boolean getStatus();
-
-    Item getChestplateType();
-
     static ChestplateWithElytraItem fromItemStack(ItemStack stack) {
         VanillaTweaksArmoredElytraItem vtae = VanillaTweaksArmoredElytraItem.fromItemStack(stack);
         if (vtae != null) return vtae;
@@ -30,29 +25,24 @@ public interface ChestplateWithElytraItem {
         return null;
     }
 
-    boolean equals(ChestplateWithElytraItem b);
-
-    boolean hasEnchantmentGlint();
-
-    boolean isArmoredElytra();
+    default boolean isArmoredElytra() {
+        ItemStack elytra = getElytra();
+        ItemStack chestplate = getChestplate();
+        return elytra != null && !elytra.isEmpty() && elytra.is(Items.ELYTRA) && chestplate != null && !chestplate.isEmpty() && InternalArrays.isItemChestplate(chestplate.getItem());
+    }
 
     default int getLeatherChestplateColor() {
-        CompoundTag leatherChestplate = getChestplate();
-        if (ItemStack.of(leatherChestplate).getItem() != Items.LEATHER_CHESTPLATE) return -1;
-        if (leatherChestplate == null) return -1;
-        if (!leatherChestplate.contains("tag", 10)) return ArmoredElytra.DEFAULT_LEATHER_COLOR;
-        CompoundTag tagData = leatherChestplate.getCompound("tag");
-        if (!tagData.contains("display", 10)) return ArmoredElytra.DEFAULT_LEATHER_COLOR;
+        ItemStack leatherChestplate = getChestplate();
+        if (leatherChestplate.getItem() != Items.LEATHER_CHESTPLATE) return -1;
+        CompoundTag tagData = leatherChestplate.getTag();
+        if (tagData == null) return ArmoredElytra.DEFAULT_LEATHER_COLOR;
+        if (!tagData.contains("display", Tag.TAG_COMPOUND)) return ArmoredElytra.DEFAULT_LEATHER_COLOR;
         CompoundTag displaydata = tagData.getCompound("display");
-        if (!displaydata.contains("color", 99)) return ArmoredElytra.DEFAULT_LEATHER_COLOR;
+        if (!displaydata.contains("color", Tag.TAG_ANY_NUMERIC)) return ArmoredElytra.DEFAULT_LEATHER_COLOR;
         return displaydata.getInt("color");
     }
 
-    CompoundTag getElytra();
+    ItemStack getElytra();
 
-    CompoundTag getChestplate();
-
-    CompoundTag getArmoredElytraData();
-
-    ItemStack getChestplateItemStack();
+    ItemStack getChestplate();
 }

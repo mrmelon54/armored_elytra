@@ -10,14 +10,14 @@
     "version": "${version}",
     "metadata": {
       "name": "Armored Elytra",
-      "description": "Show the armor and elytra when using the armored elytra datapack",
+      "description": "${description}",
       "contributors": {
         "MrMelon54": "Owner"
       },
       "contact": {
         "homepage": "https://mrmelon54.com/minecraft/armored-elytra",
-        "sources": "https://github.com/MrMelon54/armored_elytra",
-        "issues": "https://github.com/MrMelon54/armored_elytra/issues"
+        "sources": "https://github.com/mrmelon54/armored_elytra",
+        "issues": "https://github.com/mrmelon54/armored_elytra/issues"
       },
       "license": "GPL-3.0-only",
       "icon": "icon.png"
@@ -39,15 +39,15 @@
       },
       {
         "id": "minecraft",
-        "version": ">=1.20"
+        "version": "${minecraft_version}"
       },
       {
         "id": "architectury",
-        "version": ">=9.0.0"
+        "version": ">=${architectury_version}"
       }
     ]
   },
   "minecraft": {
-    "environment": "*"
+    "environment": "client"
   }
 }
