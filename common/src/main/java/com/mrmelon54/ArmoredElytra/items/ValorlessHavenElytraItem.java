@@ -5,135 +5,52 @@ import com.google.gson.JsonObject;
 import com.mrmelon54.ArmoredElytra.ArmoredElytra;
 import com.mrmelon54.ArmoredElytra.ChestplateWithElytraItem;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.nbt.ListTag;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 import java.awt.*;
 
-public class ValorlessHavenElytraItem implements ChestplateWithElytraItem {
-    public final ItemStack stack;
-    public boolean isValid;
-    public Item chestplateType;
-    public int color = ArmoredElytra.DEFAULT_LEATHER_COLOR;
-
-    public ValorlessHavenElytraItem(ItemStack stack) {
-        this.stack = stack;
-        this.isValid = isArmoredElytra();
+public record ValorlessHavenElytraItem(ItemStack stack) implements ChestplateWithElytraItem {
+    public static ValorlessHavenElytraItem fromItemStack(ItemStack stack) {
+        ValorlessHavenElytraItem item = new ValorlessHavenElytraItem(stack);
+        return item.isArmoredElytra() ? item : null;
     }
 
     @Override
-    public ItemStack getItemStack() {
+    public ItemStack getElytra() {
         return stack;
     }
 
     @Override
-    public boolean getStatus() {
-        return isValid;
-    }
-
-    public static ValorlessHavenElytraItem fromItemStack(ItemStack stack) {
-        ValorlessHavenElytraItem item = new ValorlessHavenElytraItem(stack);
-        return item.isValid ? item : null;
-    }
-
-    @Override
-    public Item getChestplateType() {
-        return chestplateType;
-    }
-
-    @Override
-    public boolean equals(ChestplateWithElytraItem b) {
-        if (b == null) return false;
-        if (b instanceof ValorlessHavenElytraItem) return stack == ((ValorlessHavenElytraItem) b).stack;
-        return false;
-    }
-
-    @Override
-    public boolean hasEnchantmentGlint() {
-        ListTag elytraEnch = stack.getEnchantmentTags();
-        ListTag chestEnch = getChestplateItemStack().getEnchantmentTags();
-        return elytraEnch.size() + chestEnch.size() > 0;
-    }
-
-    @Override
-    public boolean isArmoredElytra() {
-        if (!stack.isEmpty()) {
-            CompoundTag elytra = getElytra();
-            if (elytra != null) {
-                switch (elytra.getString("havenelytra:chestplate-type")) {
-                    case "LEATHER_CHESTPLATE" -> {
-                        chestplateType = Items.LEATHER_CHESTPLATE;
-                        JsonObject chestplateData = new Gson().fromJson(elytra.getString("havenelytra:chestplate-meta"), JsonObject.class);
-                        if (chestplateData.has("color")) {
-                            color = new Color(
-                                    chestplateData.get("color").getAsJsonObject().get("RED").getAsInt(),
-                                    chestplateData.get("color").getAsJsonObject().get("GREEN").getAsInt(),
-                                    chestplateData.get("color").getAsJsonObject().get("BLUE").getAsInt()
-                            ).getRGB();
+    public ItemStack getChestplate() {
+        ItemStack chestplate = null;
+        CompoundTag elytraTag = getElytra().getTag();
+        if (elytraTag != null) {
+            switch (elytraTag.getString("havenelytra:chestplate-type")) {
+                case "LEATHER_CHESTPLATE" -> {
+                    chestplate = Items.LEATHER_CHESTPLATE.getDefaultInstance();
+                    JsonObject chestplateData = new Gson().fromJson(elytraTag.getString("havenelytra:chestplate-meta"), JsonObject.class);
+                    // Chestplate has a saved color
+                    if (chestplateData.has("color")) {
+                        int color = new Color(
+                                chestplateData.get("color").getAsJsonObject().get("RED").getAsInt(),
+                                chestplateData.get("color").getAsJsonObject().get("GREEN").getAsInt(),
+                                chestplateData.get("color").getAsJsonObject().get("BLUE").getAsInt()
+                        ).getRGB();
+                        // Color is not the default color
+                        if (color != ArmoredElytra.DEFAULT_LEATHER_COLOR) {
+                            CompoundTag colorTag = new CompoundTag();
+                            colorTag.putInt("color", color);
+                            chestplate.getOrCreateTag().put("display", colorTag);
                         }
-                        return true;
-                    }
-                    case "CHAINMAIL_CHESTPLATE" -> {
-                        chestplateType = Items.CHAINMAIL_CHESTPLATE;
-                        return true;
-                    }
-                    case "IRON_CHESTPLATE" -> {
-                        chestplateType = Items.IRON_CHESTPLATE;
-                        return true;
-                    }
-                    case "GOLDEN_CHESTPLATE" -> {
-                        chestplateType = Items.GOLDEN_CHESTPLATE;
-                        return true;
-                    }
-                    case "DIAMOND_CHESTPLATE" -> {
-                        chestplateType = Items.DIAMOND_CHESTPLATE;
-                        return true;
-                    }
-                    case "NETHERITE_CHESTPLATE" -> {
-                        chestplateType = Items.NETHERITE_CHESTPLATE;
-                        return true;
-                    }
-                    default -> {
-                        chestplateType = Items.AIR;
-                        return false;
                     }
                 }
+                case "CHAINMAIL_CHESTPLATE" -> chestplate = Items.CHAINMAIL_CHESTPLATE.getDefaultInstance();
+                case "IRON_CHESTPLATE" -> chestplate = Items.IRON_CHESTPLATE.getDefaultInstance();
+                case "GOLDEN_CHESTPLATE" -> chestplate = Items.GOLDEN_CHESTPLATE.getDefaultInstance();
+                case "DIAMOND_CHESTPLATE" -> chestplate = Items.DIAMOND_CHESTPLATE.getDefaultInstance();
+                case "NETHERITE_CHESTPLATE" -> chestplate = Items.NETHERITE_CHESTPLATE.getDefaultInstance();
             }
-        }
-        return false;
-    }
-
-    @Override
-    public int getLeatherChestplateColor() {
-        if (chestplateType != Items.LEATHER_CHESTPLATE) return -1;
-        return color;
-    }
-
-    @Override
-    public CompoundTag getElytra() {
-        return stack.getTagElement("PublicBukkitValues");
-    }
-
-    @Override
-    public CompoundTag getChestplate() {
-        return getChestplateItemStack().getOrCreateTag();
-    }
-
-    @Override
-    public CompoundTag getArmoredElytraData() {
-        if (!stack.isEmpty()) return stack.getOrCreateTag();
-        return null;
-    }
-
-    @Override
-    public ItemStack getChestplateItemStack() {
-        ItemStack chestplate = new ItemStack(chestplateType);
-        if (chestplateType == Items.LEATHER_CHESTPLATE && color != ArmoredElytra.DEFAULT_LEATHER_COLOR) {
-            CompoundTag subtag = new CompoundTag();
-            subtag.putInt("color", color);
-            chestplate.addTagElement("display", subtag);
         }
         return chestplate;
     }
