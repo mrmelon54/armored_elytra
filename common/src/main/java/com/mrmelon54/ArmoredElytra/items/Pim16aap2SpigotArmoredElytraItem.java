@@ -9,11 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public record Pim16aap2SpigotArmoredElytraItem(ItemStack stack) implements ChestplateWithElytraItem {
-    public static Pim16aap2SpigotArmoredElytraItem fromItemStack(ItemStack stack) {
-        Pim16aap2SpigotArmoredElytraItem item = new Pim16aap2SpigotArmoredElytraItem(stack);
-        return item.isArmoredElytra() ? item : null;
-    }
-
     public ItemStack getElytra() {
         return stack;
     }
