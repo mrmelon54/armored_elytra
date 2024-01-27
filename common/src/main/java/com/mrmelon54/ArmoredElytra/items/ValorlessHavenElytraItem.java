@@ -16,12 +16,10 @@ public record ValorlessHavenElytraItem(ItemStack stack) implements ChestplateWit
         return item.isArmoredElytra() ? item : null;
     }
 
-    @Override
     public ItemStack getElytra() {
         return stack;
     }
 
-    @Override
     public ItemStack getChestplate() {
         ItemStack chestplate = null;
         CompoundTag elytraTag = getElytra().getTag();
