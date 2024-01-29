@@ -7,11 +7,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public record VanillaTweaksArmoredElytraItem(ItemStack stack) implements ChestplateWithElytraItem {
-    public static VanillaTweaksArmoredElytraItem fromItemStack(ItemStack stack) {
-        VanillaTweaksArmoredElytraItem item = new VanillaTweaksArmoredElytraItem(stack);
-        return item.isArmoredElytra() ? item : null;
-    }
-
     public ItemStack getElytra() {
         CompoundTag armElyData = getArmoredElytraData();
         if (armElyData != null) return ItemStack.of(armElyData.getCompound("elytra"));

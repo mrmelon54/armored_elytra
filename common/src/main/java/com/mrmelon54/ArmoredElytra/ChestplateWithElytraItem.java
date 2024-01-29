@@ -2,26 +2,32 @@ package com.mrmelon54.ArmoredElytra;
 
 import com.mrmelon54.ArmoredElytra.items.Pim16aap2SpigotArmoredElytraItem;
 import com.mrmelon54.ArmoredElytra.items.ValorlessHavenElytraItem;
+import com.mrmelon54.ArmoredElytra.items.TheIllusiveC4ColytraItem;
 import com.mrmelon54.ArmoredElytra.items.VanillaTweaksArmoredElytraItem;
 import com.mrmelon54.ArmoredElytra.items.VoodooTweaksPlatedElytraItem;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.Tag;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.List;
+import java.util.function.Function;
 
 public interface ChestplateWithElytraItem {
+    List<Function<ItemStack, @NotNull ChestplateWithElytraItem>> decodeItemStack = List.of(
+            VanillaTweaksArmoredElytraItem::new,
+            VoodooTweaksPlatedElytraItem::new,
+            TheIllusiveC4ColytraItem::new,
+            Pim16aap2SpigotArmoredElytraItem::new,
+            ValorlessHavenElytraItem::new
+    );
+
     static ChestplateWithElytraItem fromItemStack(ItemStack stack) {
-        VanillaTweaksArmoredElytraItem vtae = VanillaTweaksArmoredElytraItem.fromItemStack(stack);
-        if (vtae != null) return vtae;
-        VoodooTweaksPlatedElytraItem vtpe = VoodooTweaksPlatedElytraItem.fromItemStack(stack);
-        if (vtpe != null) return vtpe;
-        /*TheIllusiveC4ColytraItem ticc = TheIllusiveC4ColytraItem.fromItemStack(stack);
-        if (ticc != null) return ticc;*/
-        Pim16aap2SpigotArmoredElytraItem psae = Pim16aap2SpigotArmoredElytraItem.fromItemStack(stack);
-        if (psae != null) return psae;
-        ValorlessHavenElytraItem vhe = ValorlessHavenElytraItem.fromItemStack(stack);
-        if (vhe != null) return vhe;
+        for (Function<ItemStack, @NotNull ChestplateWithElytraItem> i : decodeItemStack) {
+            ChestplateWithElytraItem item = i.apply(stack);
+            if (item.isArmoredElytra()) return item;
+        }
         return null;
     }
 

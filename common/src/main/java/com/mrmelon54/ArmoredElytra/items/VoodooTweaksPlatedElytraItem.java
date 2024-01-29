@@ -9,11 +9,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
 public record VoodooTweaksPlatedElytraItem(ItemStack stack) implements ChestplateWithElytraItem {
-    public static VoodooTweaksPlatedElytraItem fromItemStack(ItemStack stack) {
-        VoodooTweaksPlatedElytraItem item = new VoodooTweaksPlatedElytraItem(stack);
-        return item.isArmoredElytra() ? item : null;
-    }
-
     public ItemStack getElytra() {
         return stack.is(Items.ELYTRA) ? stack : null;
     }
