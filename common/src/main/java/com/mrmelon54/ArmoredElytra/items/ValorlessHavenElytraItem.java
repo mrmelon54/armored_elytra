@@ -11,11 +11,6 @@ import net.minecraft.world.item.Items;
 import java.awt.*;
 
 public record ValorlessHavenElytraItem(ItemStack stack) implements ChestplateWithElytraItem {
-    public static ValorlessHavenElytraItem fromItemStack(ItemStack stack) {
-        ValorlessHavenElytraItem item = new ValorlessHavenElytraItem(stack);
-        return item.isArmoredElytra() ? item : null;
-    }
-
     public ItemStack getElytra() {
         return stack;
     }
