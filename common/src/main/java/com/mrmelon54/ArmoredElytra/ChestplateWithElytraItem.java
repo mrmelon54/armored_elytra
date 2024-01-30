@@ -1,6 +1,7 @@
 package com.mrmelon54.ArmoredElytra;
 
 import com.mrmelon54.ArmoredElytra.items.Pim16aap2SpigotArmoredElytraItem;
+import com.mrmelon54.ArmoredElytra.items.ValorlessHavenElytraItem;
 import com.mrmelon54.ArmoredElytra.items.TheIllusiveC4ColytraItem;
 import com.mrmelon54.ArmoredElytra.items.VanillaTweaksArmoredElytraItem;
 import com.mrmelon54.ArmoredElytra.items.VoodooTweaksPlatedElytraItem;
@@ -18,7 +19,8 @@ public interface ChestplateWithElytraItem {
             VanillaTweaksArmoredElytraItem::new,
             VoodooTweaksPlatedElytraItem::new,
             TheIllusiveC4ColytraItem::new,
-            Pim16aap2SpigotArmoredElytraItem::new
+            Pim16aap2SpigotArmoredElytraItem::new,
+            ValorlessHavenElytraItem::new
     );
 
     static ChestplateWithElytraItem fromItemStack(ItemStack stack) {
