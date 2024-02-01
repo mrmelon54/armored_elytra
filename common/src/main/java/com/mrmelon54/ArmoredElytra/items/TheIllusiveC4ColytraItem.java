@@ -18,4 +18,9 @@ public record TheIllusiveC4ColytraItem(ItemStack stack) implements ChestplateWit
     public ItemStack getChestplate() {
         return stack;
     }
+
+    @Override
+    public boolean baseStackIsElytra() {
+        return false;
+    }
 }

@@ -51,4 +51,8 @@ public interface ChestplateWithElytraItem {
     ItemStack getElytra();
 
     ItemStack getChestplate();
+
+    default boolean baseStackIsElytra() {
+        return true;
+    }
 }

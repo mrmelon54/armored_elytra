@@ -1,22 +1,16 @@
 package com.mrmelon54.ArmoredElytra;
 
-import com.mrmelon54.ArmoredElytra.models.ArmoredElytraModelProvider;
 import dev.architectury.event.events.client.ClientPlayerEvent;
 import dev.architectury.event.events.client.ClientTickEvent;
 import dev.architectury.event.events.client.ClientTooltipEvent;
 import dev.architectury.platform.Platform;
-import dev.architectury.registry.client.rendering.ColorHandlerRegistry;
-import dev.architectury.registry.item.ItemPropertiesRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.CommonComponents;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,22 +31,6 @@ public class ArmoredElytra {
 
         // Listen for the end of every tick
         ClientTickEvent.CLIENT_POST.register(ArmoredElytra::tick);
-
-        // Create a new model provider
-        ArmoredElytraModelProvider armElyModelProvider = new ArmoredElytraModelProvider();
-
-        // Set up the model provider and color provider for the elytra item
-        ItemPropertiesRegistry.register(Items.ELYTRA, new ResourceLocation("armored_elytra_type"), armElyModelProvider);
-        ColorHandlerRegistry.registerItemColors((itemStack, i) -> {
-            if (itemStack == null) return -1;
-            ChestplateWithElytraItem item = ChestplateWithElytraItem.fromItemStack(itemStack);
-            if (item == null) return -1;
-            return i > 0 ? -1 : item.getLeatherChestplateColor();
-        }, Items.ELYTRA);
-
-        // Set up the model provider for all chestplate items
-        for (Item chestplateType : InternalArrays.CHESTPLATES)
-            ItemPropertiesRegistry.register(chestplateType, new ResourceLocation("armored_elytra_type"), armElyModelProvider);
 
         // Clear armored elytra mappings when quitting a level
         ClientPlayerEvent.CLIENT_PLAYER_QUIT.register(player -> armoredElytraMappings.clear());
