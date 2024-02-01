@@ -8,16 +8,15 @@ import org.spongepowered.asm.mixin.Unique;
 @Mixin(ItemStack.class)
 public class ItemStackMixin implements SecondLayerProvider {
     @Unique
-    private boolean armored_elytra$isSecondArmoredElytraLayer;
-
+    private boolean armored_elytra$isSecondArmoredElytraLayer = false;
 
     @Override
-    public void armored_elytra$setSecondLayer(boolean secondLayer) {
+    public void armored_elytra$setSecondLayer() {
         armored_elytra$isSecondArmoredElytraLayer = true;
     }
 
     @Override
-    public boolean armored_elytra$isSecondLayer() {
-        return armored_elytra$isSecondArmoredElytraLayer;
+    public boolean armored_elytra$isNotSecondLayer() {
+        return !armored_elytra$isSecondArmoredElytraLayer;
     }
 }

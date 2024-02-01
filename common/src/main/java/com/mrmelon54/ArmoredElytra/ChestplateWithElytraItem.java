@@ -1,5 +1,6 @@
 package com.mrmelon54.ArmoredElytra;
 
+import com.mrmelon54.ArmoredElytra.duck.SecondLayerProvider;
 import com.mrmelon54.ArmoredElytra.items.Pim16aap2SpigotArmoredElytraItem;
 import com.mrmelon54.ArmoredElytra.items.ValorlessHavenElytraItem;
 import com.mrmelon54.ArmoredElytra.items.TheIllusiveC4ColytraItem;
@@ -29,6 +30,16 @@ public interface ChestplateWithElytraItem {
             if (item.isArmoredElytra()) return item;
         }
         return null;
+    }
+
+    static ItemStack getSecondLayer(ItemStack stack) {
+        ChestplateWithElytraItem item = ChestplateWithElytraItem.fromItemStack(stack);
+        if (item == null) return null;
+        ItemStack chestplate = item.getChestplate();
+        if (chestplate == null) return null;
+        ItemStack copy = chestplate.copy();
+        ((SecondLayerProvider) (Object) copy).armored_elytra$setSecondLayer();
+        return copy;
     }
 
     default boolean isArmoredElytra() {
