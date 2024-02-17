@@ -2,11 +2,13 @@ package com.mrmelon54.ArmoredElytra.items;
 
 
 import com.mrmelon54.ArmoredElytra.ChestplateWithElytraItem;
+import com.mrmelon54.ArmoredElytra.NbtUtils;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 
 public record VanillaTweaksArmoredElytraItem(ItemStack stack) implements ChestplateWithElytraItem {
+    private static String ARM_ELY_DATA = "armElyData";
+
     public ItemStack getElytra() {
         CompoundTag armElyData = getArmoredElytraData();
         if (armElyData != null) return ItemStack.of(armElyData.getCompound("elytra"));
@@ -20,7 +22,6 @@ public record VanillaTweaksArmoredElytraItem(ItemStack stack) implements Chestpl
     }
 
     public CompoundTag getArmoredElytraData() {
-        if (!stack.isEmpty() && stack.getItem() == Items.ELYTRA) return stack.getOrCreateTagElement("armElyData");
-        return null;
+        return NbtUtils.getTagElementFix(stack, "armElyData");
     }
 }
