@@ -19,10 +19,10 @@ public record ValorlessHavenElytraItem(ItemStack stack) implements ChestplateWit
         CompoundTag elytraTag = getElytra().getTag();
         if (elytraTag == null) return null;
         ItemStack chestplate = null;
-        switch (elytraTag.getString("havenelytra:chestplate-type")) {
+        switch (elytraTag.getString("elytra-chestplate-type")) {
             case "LEATHER_CHESTPLATE" -> {
                 chestplate = Items.LEATHER_CHESTPLATE.getDefaultInstance();
-                JsonObject chestplateData = new Gson().fromJson(elytraTag.getString("havenelytra:chestplate-meta"), JsonObject.class);
+                JsonObject chestplateData = new Gson().fromJson(elytraTag.getString("elytra-chestplate-meta"), JsonObject.class);
                 // Chestplate has a saved color
                 if (chestplateData.has("color")) {
                     int color = new Color(
