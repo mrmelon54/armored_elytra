@@ -100,4 +100,6 @@ for plugin in valorless-haven-elytra teaks-tweaks-armored-elytra pim-armored-ely
     mkcp "pack-downloads/valorlessutils.jar" "run/paper-servers/$plugin/plugins/valorlessutils.jar"
   fi
   mkcp "pack-downloads/paper-1.20.4.jar" "run/paper-servers/$plugin/paper-1.20.4.jar"
+  echo "eula=true" > "run/paper-servers/$plugin/eula.txt"
+  echo "online-mode=false" > "run/paper-servers/$plugin/server.properties"
 done
