@@ -41,7 +41,7 @@ public abstract class MixinHumanoidArmorLayer<T extends LivingEntity, M extends 
         // Toggle isFakeArmorPass to signal that this is the chestplate repeat
         armored_elytra$isFakeArmorPass = true;
         armored_elytra$currentLivingEntity = livingEntity;
-        this.renderArmorPiece(poseStack, multiBufferSource, livingEntity, EquipmentSlot.OFFHAND, i, this.getArmorModel(EquipmentSlot.CHEST));
+        this.renderArmorPiece(poseStack, multiBufferSource, livingEntity, EquipmentSlot.CHEST, i, this.getArmorModel(EquipmentSlot.CHEST));
         armored_elytra$isFakeArmorPass = false;
     }
 
